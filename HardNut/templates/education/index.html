@@ -1,0 +1,58 @@
+{% extends "education/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+
+<style>
+    @keyframes move{
+        from {
+            left: 0%;
+        }
+        to {
+           left: 43%;
+        }
+    }
+
+    @keyframes grow{
+        from {
+            font-size: 0;
+        }
+        to {
+            font-size: 40px;
+        }
+    }
+
+    #welcome {
+        position: relative;
+        animation-name: move;
+        animation-duration: 2s;
+        animation-fill-mode: forwards;
+    }
+
+    #left-side {
+        position: absolute;
+        left: 40px;
+        top: 400px;
+        animation-name: grow;
+        animation-duration: 2s;
+        animation-fill-mode: forwards;
+    }
+
+    #right-side {
+        position: absolute;
+        left: 1050px;
+        top: 400px;
+        animation-name: grow;
+        animation-duration: 2s;
+        animation-fill-mode: forwards;
+    }
+</style>
+
+<h1 id="welcome">Welcome To</h1>
+
+<h3 id="left-side">Create your goals.</h3>
+<h3 id="right-side">Plan it, Achieve it.</h3>
+
+<img src="{% static 'education/Hardnut.jpg' %}" class="offset-3" width="700" height="500" alt="" loading="lazy">
+{% endblock %}

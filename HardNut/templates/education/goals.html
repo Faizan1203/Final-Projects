@@ -1,0 +1,60 @@
+{% extends "education/layout.html" %}
+{% load static %}
+{% block body %}
+<script type="text/javascript" src="{% static 'education/goal_check.js' %}"></script>
+<script type="text/javascript" src="{% static 'education/delete_goal.js' %}"></script>
+<script type="text/javascript" src="{% static 'education/edit_goal.js' %}"></script>
+
+<form action="{% url 'goals' %}" class="create-goal" method="post" id="new_post_card" autocomplete="off">
+  {% csrf_token %}
+  <div class="mb-3">
+    <h3>New Goal</h3>
+    <label>Goal:</label><textarea name="goal" class="form-control" rows="1"></textarea>
+    <label>End Date:</label><input name="end_goal" type="date" class="form-control"></input>
+    <label>Rewards:</label><textarea name="reward_goal" class="form-control" rows="1"></textarea>
+  </div>
+  <button id="goal-button" type="submit" class="btn btn-primary">Create Goal</button>
+</form>
+<h5 class="something" id="goals_heading">Current Goals</h5>
+{% for goal in goals %}
+  <div id="new_post_card" data-id={{goal.id}} class="card goal_card">
+    <h5 id="goal-goal-{{goal.id}}" class="something"> {{ goal.goal }} </h5>
+    <textarea data-id="{{goal.id}}" id="goal-name-edit-{{goal.id}}" style="display:none;" class="form-control something" row="1">{{goal.goal}}</textarea>
+
+    <h6 class="card-subtitle mb-2 text-muted something" >Start Date: {{ goal.goal_created_date }}</h6>
+
+    <h6 class="card-subtitle mb-2 text-muted something" id="goal-end_date-{{goal.id}}" >End Date: {{ goal.goal_end_date }}</h6>
+    <input data-id="{{goal.id}}" id="goal-end_date-edit-{{goal.id}}" style="display:none;" class="form-control something" type="date" value="{{ goal.goal_end_date }}" >
+
+    <h6 class="card-subtitle mb-2 text-muted something">Goal status: {% if goal.goal_achieved %} Done {% else %} Work in progress {% endif %}</h6>
+
+    <h6 class="card-subtitle mb-2 text-muted something" id="goal-rewards-{{goal.id}}" >Rewards: {{ goal.goal_reward }}</h6>
+    <textarea data-id="{{goal.id}}" id="goal-rewards-edit-{{goal.id}}" style="display:none;" class="form-control something" row="1">{{goal.goal_reward}}</textarea>
+
+    <div class="form-check">
+      {% if goal.goal_achieved %}
+      <input class="form-check-input" type="checkbox" id="complete_goal" value="" checked disabled>
+      {% else %}
+      <input class="form-check-input" type="checkbox" id="complete_goal" value="">
+      {% endif %}
+      <label class="form-check-label" for="complete_goal">
+          <h6>Goal completed</h6>
+      </label>
+    </div>
+    {% if not goal.goal_achieved %}
+    <button data-id="{{ goal.id }}" {%if goal.goal_achieved %} data-is_achieved = "no" {% else %} data-is_achieved = "yes" {% endif %}
+    id="goal-status-update" type="submit" class="btn btn-primary col-3 goal_update">Update goal status</button>
+    <a href="#"class="card-link edit" id="edit-goal-{{goal.id}}" data-name="{{goal.goal}}"data-id="{{goal.id}}" >Edit</a>
+    <a href="{% url 'goals' %}" class="cancel" style="display:none;">Cancel</a>
+    {% endif %}
+    <div id="delete-goal-btn" data-id ="{{goal.id}}">
+    <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+      <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+      <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+    </svg>
+    </div>
+  </div>
+{% empty %}
+<h5 id="new_post_card">No Goals</h5>
+{% endfor %}
+{% endblock %}

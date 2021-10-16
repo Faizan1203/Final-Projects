@@ -1,0 +1,46 @@
+{% extends "education/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+<script type="text/javascript" src="{% static 'education/delete_room.js' %}"></script>
+<script type="text/javascript" src="{% static 'education/edit_room.js' %}"></script>
+
+<form action="{% url 'create_room' %}" id="new_room" class="wierd" method="post" autocomplete="off">
+  {% csrf_token %}
+  <div class="mb-3">
+    <h3>New Room</h3>
+    <label>Room:</label><textarea name="room" class="form-control" rows="1"></textarea>
+  </div>
+  <button id="goal-button" type="submit" class="btn btn-primary">Create Room</button>
+</form>
+
+<h3 id="room_heading">Current Rooms</h3>
+      {% for room in rooms %}
+<div class="card wierd">
+
+  <h5 class="wierd" id="room-{{room.id}}"> {{ room.room_name }} </h5>
+  <textarea data-id="{{room.id}}" id="room-edit-{{room.id}}" style="display:none;" class="form-control wierd" row="1">{{room.room_name}}</textarea>
+
+  <h6 class="card-subtitle mb-2 text-muted wierd">Created on: {{room.room_created_date}}</h6>
+  <a href="#" class="card-link edit" id="edit-room-{{room.id}}" data-id="{{room.id}}" data-name="{{room.room_name}}">Edit</a>
+  <a href="{% url 'all_rooms' %}" class="cancel" style="display:none;">Cancel</a>
+
+  <div id="delete-room-btn" data-id ="{{room.id}}">
+    <svg  xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+      <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
+      <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/>
+    </svg>
+  </div>
+  <a class="btn btn-primary col-1 wierd" id="go_to_room-btn" href="study/{{room.id}}" method="post">Go to room</a>
+
+</div>
+    {% empty %}
+    <h4 class="wierd">No Rooms</h4>
+    {% endfor %}
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "education/layout.html" %}
+
+{% load static %}
+
+{% block body %}
+<div class="card-group">
+  <div class="card">
+    <img src="https://www.ajura.com/blog/wp-content/uploads/2016/10/800x300.png" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">All Goals</h5>
+      <ol>
+      {% for i in goals_total %}
+          <li>{{i.goal}}</li>
+          {% empty %}
+          <ul><li>No Goals</li></ul>
+          {% endfor %}
+      </ol>
+    </div>
+  </div>
+  <div class="card">
+    <img src="https://wpamelia.com/wp-content/uploads/2018/11/ezgif-2-078cdcb3f1d3.gif" height="170px" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Goals In Progress</h5>
+      <ol>
+          {% for i in goals_inprogress %}
+          <li>{{i.goal}}</li>
+          {% empty %}
+          <ul><li>No Goals In Progress</li></ul>
+          {% endfor %}
+
+      </ol>
+    </div>
+  </div>
+  <div class="card">
+    <img src="https://www.icegif.com/wp-content/uploads/thumbs-up-icegif-21.gif" height="170px" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">Completed Goals</h5>
+      <ol>
+          {% for i in goals_completed %}
+          <li>{{i.goal}}</li>
+          {% empty %}
+          <ul><li>No Goals Completed</li></ul>
+          {% endfor %}
+      </ol>
+    </div>
+  </div>
+</div>
+{% endblock %}
